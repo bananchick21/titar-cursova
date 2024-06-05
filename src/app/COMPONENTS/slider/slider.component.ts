@@ -1,8 +1,8 @@
 import {Component, OnInit, signal} from '@angular/core';
-import {NewsStoreService} from "../../SERVICES/news-store.service";
-import {BehaviorSubject, interval, map, Observable, of, startWith, switchMap} from "rxjs";
+import {interval, map} from "rxjs";
 import {AsyncPipe} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
+import {MuseumStoreService} from "../../SERVICES/museum-store.service";
 
 @Component({
   selector: 'app-slider',
@@ -14,35 +14,36 @@ import {MatIcon} from "@angular/material/icon";
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css'
 })
-export class SliderComponent implements OnInit{
+export class SliderComponent implements OnInit {
   index: number = 0;
-  images: string[] = [];
-  private imageSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  obs!: Observable<string>;
-  constructor(private store: NewsStoreService) {}
+  museumsUrl: string[] = [];
+
+  constructor(private store: MuseumStoreService) {
+  }
+
   indexSignal = signal(0)
+
   ngOnInit() {
-    this.store.getNews().then(value => {
-      this.images = value.map(newsItem => newsItem.imgUrl);
-      this.startImageCycle();
-    });
+    const mus = this.store.getMuseums()
+    this.museumsUrl = mus.flatMap(musItem => musItem.photosUrl);
+    this.startImageCycle();
   }
 
   startImageCycle() {
-    interval(10000).pipe(
+    interval(8000).pipe(
       map(() => {
-        this.indexSignal.set((this.index + 1) % this.images.length);
+        this.indexSignal.set((this.index + 1) % this.museumsUrl.length);
       })
     ).subscribe();
   }
 
-  changeNews(operator: '+' | '-') {
+  changeMuseum(operator: '+' | '-') {
     switch (operator) {
       case '+':
-        this.index = (this.index + 1) % this.images.length;
+        this.index = (this.index + 1) % this.museumsUrl.length;
         break;
       case '-':
-        this.index = (this.index - 1 + this.images.length) % this.images.length;
+        this.index = (this.index - 1 + this.museumsUrl.length) % this.museumsUrl.length;
         break;
     }
     this.indexSignal.set(this.index);

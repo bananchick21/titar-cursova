@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterLink} from "@angular/router";
-import {News} from "../MODELS/models";
 import {SliderComponent} from "../COMPONENTS/slider/slider.component";
-import {NewsCardComponent} from "../SHARED/news-card/news-card.component";
+import {MuseumCardComponent} from "../SHARED/museum-card/museum-card.component";
 import {NgIf} from "@angular/common";
+import {Museum} from "../MODELS/constants";
+import {MuseumStoreService} from "../SERVICES/museum-store.service";
 
 @Component({
   selector: 'app-main',
@@ -11,20 +12,21 @@ import {NgIf} from "@angular/common";
   imports: [
     RouterLink,
     SliderComponent,
-    NewsCardComponent,
+    MuseumCardComponent,
     NgIf
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css'
 })
-export class MainComponent implements OnInit{
-  constructor(private activatedRoute: ActivatedRoute) {
+export class MainComponent implements OnInit {
+
+  museums!: Museum[];
+
+  constructor(private museumStoreService: MuseumStoreService) {
   }
-  news: News[] = []
+
   ngOnInit() {
-    this.activatedRoute.data.subscribe(params => {
-      this.news = params['news'];
-    })
+    this.museums = this.museumStoreService.getMuseums();
   }
 
 }

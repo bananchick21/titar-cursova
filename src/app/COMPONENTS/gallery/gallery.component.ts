@@ -1,5 +1,5 @@
 import {Component, OnInit,} from '@angular/core';
-import {NewsStoreService} from "../../SERVICES/news-store.service";
+import {MuseumStoreService} from "../../SERVICES/museum-store.service";
 
 @Component({
   selector: 'app-gallery',
@@ -13,13 +13,12 @@ export class GalleryComponent implements OnInit {
   currentImg = ''
 
   ngOnInit() {
-    this.store.getNews().then(val => {
-      this.images = val.map(value => value.imgUrl);
-      this.currentImg = this.images[0];
-    });
+    this.images = this.store.getMuseums().flatMap(value => value.photosUrl)
+
+    this.currentImg = this.images[0];
   }
 
-  constructor(private store: NewsStoreService) {
+  constructor(private store: MuseumStoreService) {
   }
 
   changeImg(i: number) {

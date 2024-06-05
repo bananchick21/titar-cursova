@@ -1,0 +1,13 @@
+<div class="container flex justify-center flex-col mb-2">
+  <div class="w-full max-w-2xl flex flex-col gap-4 p-3 ">
+    <div class="flex justify-center">
+      <img height="200" src="{{museum.photosUrl[0]}}">
+    </div>
+    <h2>{{ museum.name }}</h2>
+    <p>Години праці <b>{{ museum.opening_hours }}</b></p>
+    <p class="text-justify">{{ museum.description }}</p>
+  </div>
+  <google-map height="400px" width="100%" [center]="center">
+    <map-marker [position]="center"></map-marker>
+  </google-map>
+</div>

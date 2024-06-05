@@ -15,7 +15,7 @@ import {GoogleMap, MapAdvancedMarker, MapMarker} from "@angular/google-maps";
 export class ContactsComponent {
   @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
   center:google.maps.LatLngLiteral = {
-    lat: 49.5754523,
-    lng: 34.5598499
+    lat: 49.5759721,
+    lng: 34.5669365
   }
 }
